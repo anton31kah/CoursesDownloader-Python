@@ -3,7 +3,7 @@ from CoursesClient.CoursesClient import CoursesClient
 from CoursesClient.SectionExtractor import extract_sections_for_course
 from CoursesClient.CoursesDefiner import define_current_courses
 from Common.CommonFuncs import clear
-import Common.CommonVars as CommonVars
+from Common.CommonVars import CommonVars
 from AdvancedInput.MenuChooseItem import ask_input_for_item_from_list, ask_input_for_items_from_list
 from AdvancedInput.MenuChooseItem import ask_yes_no_question
 
@@ -13,7 +13,6 @@ class CoursesDownloader:
 		self.course_link = None
 		self.selected_section = None
 		self.selected_links = []
-		CommonVars.common_common_vars_init()
 		CoursesClient()
 		define_current_courses()
 
@@ -57,10 +56,10 @@ class CoursesDownloader:
 		elif total_len > 1:
 			for idx, link in enumerate(self.selected_links, 1):
 				clear()
-				print("Downloading", idx, "/", total_len)
+				print(f"Downloading {idx} / {total_len}")
 				link.download(ambiguous=True)
 
-				print("Downloaded", total_len, "successfully")
+			print(f"Downloaded {total_len} successfully")
 
 	def __count_specific_runner(self, count_specific_ask_method):
 		self.__ask_for_course()
@@ -91,6 +90,7 @@ class CoursesDownloader:
 					if not answer:
 						break
 					else:
+						CommonVars.chosen_items_till_now.clear()
 						current_action_idx = 0
 		pass
 

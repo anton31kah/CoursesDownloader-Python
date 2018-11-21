@@ -5,7 +5,7 @@ from CoursesClient.CoursesClient import CoursesClient
 from CoursesModels.Links.FileLink import FileLink
 from CoursesModels.Links.FolderLink import FolderLink
 from CoursesModels.Section import Section
-import Common.CommonVars as CommonVars
+from Common.CommonVars import CommonVars
 
 
 def extract_sections_for_course(course_link):

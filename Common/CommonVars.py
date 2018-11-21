@@ -1,14 +1,4 @@
-def common_common_vars_init():
-	global courses
-	global sections
-	global chosen_items_till_now
-	global sesskey
-	global known_file_types
-	global xpath_filter_a
-	global xpath_filter_a_h1_to_h6
-	global xpath_filter_a_h1_to_h6_with_folders
-	global macedonian_to_english_chars
-
+class CommonVars:
 	courses = []
 
 	sections = []

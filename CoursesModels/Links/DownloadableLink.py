@@ -6,7 +6,7 @@ from pathlib import Path
 
 import magic
 
-import Common.CommonVars as CommonVars
+from Common.CommonVars import CommonVars
 from Common.CommonFuncs import clear, transliterate_mk_to_en
 from CoursesModels.Links.Link import Link
 
@@ -20,7 +20,7 @@ class DownloadableLink(ABC, Link):
 	def download(self, ambiguous=False):
 		if not ambiguous:
 			clear()
-			print("Downloading", self.name)
+			print(f"Downloading {self.name}")
 
 		filename = self._prepare_filename_for_downloading()
 
@@ -29,7 +29,7 @@ class DownloadableLink(ABC, Link):
 		filename = self.handle_file_name_and_type(filename)
 
 		if not ambiguous:
-			print("Downloaded", self.name, "as", filename)
+			print(f"Downloaded {self.name} as {filename}")
 
 	@abstractmethod
 	def _get_and_save_file(self, filename):

@@ -1,7 +1,7 @@
 import re
 
 from CoursesClient.CoursesClient import CoursesClient
-import Common.CommonVars as CommonVars
+from Common.CommonVars import CommonVars
 from CoursesModels.Links.DownloadableLink import DownloadableLink
 
 

@@ -1,4 +1,4 @@
-import Common.CommonVars as CommonVars
+from Common.CommonVars import CommonVars
 from CoursesModels.Links.CourseLink import CourseLink
 
 

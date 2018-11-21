@@ -1,20 +1,21 @@
-import Common.CommonVars as CommonVars
+from Common.CommonVars import CommonVars
 from AdvancedInput.PrivateFuncs import PrivateFuncs
 from Common.BackWasPressed import BackWasPressed
 from Common.CommonFuncs import clear, trim_inner_spaces, sorted_unique_list
 
 
-def ask_input_for_item_from_list(items_list, item_word, action_word="view", with_clear=True):
+def ask_input_for_item_from_list(items_list, item_word, action_word="view", with_clear=True, inside_call=False):
 	if with_clear:
 		clear()
 
-	for prev_item in CommonVars.chosen_items_till_now.values():
-		print(prev_item)
+	if not inside_call:
+		for prev_item in CommonVars.chosen_items_till_now.values():
+			print(prev_item)
 
 	print(f"Select the {item_word} you want to {action_word}:")
 
 	for i, item in enumerate(items_list, 1):
-		print(f"[{i}]", item)
+		print(f"[{i}] {item}")
 
 	selected_item = None
 
@@ -44,7 +45,8 @@ def ask_input_for_item_from_list(items_list, item_word, action_word="view", with
 		else:
 			print(f"The {item_word} you chose is out of bounds! Try again.")
 
-	CommonVars.chosen_items_till_now[item_word] = f"You chose {trim_inner_spaces(selected_item)}"
+	if not inside_call:
+		CommonVars.chosen_items_till_now[item_word] = f"You chose {trim_inner_spaces(selected_item)}"
 
 	return selected_item
 
@@ -63,7 +65,7 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 	print(f"Select the {items_word} you want to {action_word}: (range:x-y or set:x,y,z)")
 
 	for i, item in enumerate(items_list, 1):
-		print(f"[{i}]", item)
+		print(f"[{i}] {item}")
 
 	selected_items = []
 
@@ -93,18 +95,22 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 			if set_result != set_fit_result:
 				invalid = sorted_unique_list(list(set_result - set_fit_result))
 				invalid_str = build_ranges_str(invalid)
-				print(f"The following {items_word} are out of range:", invalid_str)
 
-				print(f"However these {items_word} are in range:", valid_str)
-				choices_possible = [
-					"Download only those in range and ignore those which are not",
-					"Download only those in range and change those which are not",
-					"Don't download those in range and change the whole selection"
-				]
+				if valid_str:
+					print(f"The following {items_word} are out of range: {invalid_str}")
+					print(f"However these {items_word} are in range: {valid_str}")
+					choices_possible = [
+						f"Download only {valid_str} and ignore {invalid_str}",
+						f"Download only {valid_str} and change {invalid_str}",
+						f"Don't download {valid_str} and change the whole selection"
+					]
+				else:
+					print(f"All of the following {items_word} are out of range: {invalid_str}")
+					continue
 
-				# noinspection PyNoneFunctionAssignment
-				# it's lying, you can see the return statement yourself
-				choice_selected = ask_input_for_item_from_list(choices_possible, "choice", "choose", with_clear=False)
+				choice_selected = ask_input_for_item_from_list(
+										choices_possible, "choice", "choose", with_clear=False, inside_call=True
+									)
 
 				if choice_selected == choices_possible[0]:
 					selected_items.extend(valid)
@@ -114,7 +120,7 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 				elif choice_selected == choices_possible[2]:
 					selected_items.clear()
 			else:
-				print(f"These {items_word} will be downloaded:", valid_str)
+				print(f"These {items_word} will be downloaded: {valid_str}")
 
 				def on_yes_action():
 					nonlocal selected_item_isvalid
