@@ -1,3 +1,6 @@
+from CoursesModels.Links.CourseLink import CourseLink
+
+
 class CommonVars:
 	courses = []
 
@@ -63,3 +66,19 @@ class CommonVars:
 		"Џ": "Dzh", "џ": "dzh",
 		"Ш": "Sh", "ш": "sh"
 	}
+
+	def __new__(cls):
+		if not cls.courses:
+			course_link_prefix = "http://courses.finki.ukim.mk/course/view.php?id="
+			cls.courses = [
+				CourseLink("MPS     Microprocessor Systems", f"{course_link_prefix}1335"),
+				CourseLink("DB      Databases", f"{course_link_prefix}1345"),
+				CourseLink("MIS     Management Information Systems", f"{course_link_prefix}1351"),
+				CourseLink("MPIP    Mobile Platforms And Programming", f"{course_link_prefix}1331"),
+				CourseLink("CN      Computer Networks", f"{course_link_prefix}1332"),
+				CourseLink("PS      Probability And Statistics", f"{course_link_prefix}1306"),
+				CourseLink("CN-MK   Computer Networks - MK", f"{course_link_prefix}1309")
+			]
+
+
+CommonVars()

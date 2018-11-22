@@ -1,5 +1,6 @@
 import mimetypes
 import os
+import os.path
 import re
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -46,9 +47,11 @@ class DownloadableLink(ABC, Link):
 		if not file_type:
 			file_type = ".unknown"
 
-		os.rename(filename, f"{filename}{file_type}")
+		new_filename = self.handle_file_name_exists(filename, file_type)
 
-		filename = f"{filename}{file_type}"
+		os.rename(filename, f"{new_filename}{file_type}")
+
+		filename = f"{new_filename}{file_type}"
 		filename = filename.replace(self.default_location, "")
 
 		return filename
@@ -69,3 +72,13 @@ class DownloadableLink(ABC, Link):
 		filename = re.sub(self.illegal_chars_regex, "_", self.name)
 		filename = self.default_location + filename
 		return filename
+
+	@staticmethod
+	def handle_file_name_exists(filename, file_type):
+		i = 1
+		new_filename = filename
+		while os.path.isfile(f"{new_filename}{file_type}"):
+			new_filename = f"{filename}_{i}"
+			i += 1
+
+		return new_filename
