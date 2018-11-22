@@ -67,6 +67,10 @@ class CommonVars:
 		"Ш": "Sh", "ш": "sh"
 	}
 
+	original_sys_stdin = None
+	original_sys_stdout = None
+	original_sys_stderr = None
+
 	def __new__(cls):
 		if not cls.courses:
 			course_link_prefix = "http://courses.finki.ukim.mk/course/view.php?id="
