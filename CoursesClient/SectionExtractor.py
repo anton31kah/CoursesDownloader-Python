@@ -2,6 +2,7 @@ import re
 import lxml.html
 
 from CoursesClient.CoursesClient import CoursesClient
+from CoursesModels.Header import Header
 from CoursesModels.Links.FileLink import FileLink
 from CoursesModels.Links.FolderLink import FolderLink
 from CoursesModels.Section import Section
@@ -21,7 +22,7 @@ def extract_sections_for_course(course_link):
 
 	for header_link in headers_links:
 		if header_link.tag.startswith("h"):
-			current_section = Section(next(header_link.itertext()))
+			current_section = Section(Header(next(header_link.itertext()), header_link.tag))
 			CommonVars.sections.append(current_section)
 		elif 'resource' in header_link.attrib['href']:  # header_link.tag.startswith("a")
 			current_section.links.append(FileLink(next(header_link.itertext()), header_link.attrib['href']))

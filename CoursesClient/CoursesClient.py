@@ -3,6 +3,10 @@ from datetime import datetime
 import keyring
 import requests
 import lxml.html
+from urllib3.exceptions import MaxRetryError
+
+from AdvancedInput.MenuChooseItem import ask_yes_no_question
+from Common.CommonFuncs import clear
 
 
 class CoursesClient:
@@ -13,9 +17,22 @@ class CoursesClient:
 	def __create_session(cls):
 		session = requests.session()
 
-		print("Establishing connection with courses")
+		while True:
+			print("Establishing connection with courses")
 
-		login = session.get("http://courses.finki.ukim.mk/login/index.php", allow_redirects=True)
+			try:
+				login = session.get("http://courses.finki.ukim.mk/login/index.php", allow_redirects=True)
+
+			except (MaxRetryError, requests.exceptions.ConnectionError):
+				print("Connection cannot be established")
+				should_retry = ask_yes_no_question("Do you want to try again? [Y/N] ", None)
+				if not should_retry:
+					quit()
+				else:
+					clear()
+					continue
+
+			break
 
 		print("Preparing CAS login")
 
