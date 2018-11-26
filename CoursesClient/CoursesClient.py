@@ -17,6 +17,8 @@ class CoursesClient:
 	def __create_session(cls):
 		session = requests.session()
 
+		login = None
+
 		while True:
 			print("Establishing connection with courses")
 
