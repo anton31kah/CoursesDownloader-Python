@@ -8,7 +8,7 @@ from pathlib import Path
 import magic
 
 from Common.CommonVars import CommonVars
-from Common.CommonFuncs import clear, transliterate_mk_to_en
+from Common.CommonFuncs import CommonFuncs
 from CoursesModels.Links.Link import Link
 
 
@@ -20,7 +20,7 @@ class DownloadableLink(ABC, Link):
 
 	def download(self, ambiguous=False):
 		if not ambiguous:
-			clear()
+			CommonFuncs.clear()
 			print(f"Downloading {self.name}")
 
 		filename = self._prepare_filename_for_downloading()
@@ -58,7 +58,7 @@ class DownloadableLink(ABC, Link):
 
 	@staticmethod
 	def handle_cyrillic_filename(filename):
-		transliterated_filename = transliterate_mk_to_en(filename, CommonVars.macedonian_to_english_chars)
+		transliterated_filename = CommonFuncs.transliterate_mk_to_en(filename, CommonVars.macedonian_to_english_chars)
 
 		os.rename(filename, transliterated_filename)
 
@@ -69,7 +69,8 @@ class DownloadableLink(ABC, Link):
 		return file_type_mime
 
 	def _prepare_filename_for_downloading(self):
-		filename = re.sub(self.illegal_chars_regex, "_", self.name)
+		filename = self.choose_naming()
+		filename = re.sub(self.illegal_chars_regex, "_", filename)
 		filename = self.default_location + filename
 		return filename
 
@@ -82,3 +83,9 @@ class DownloadableLink(ABC, Link):
 			i += 1
 
 		return new_filename
+
+	def choose_naming(self):
+		if CommonVars.should_use_link_name_instead_of_name_from_url:
+			return self.name
+		else:
+			return CommonFuncs.extract_filename_from_url(self.url)

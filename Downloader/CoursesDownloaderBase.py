@@ -1,4 +1,4 @@
-from Common.CommonFuncs import clear
+from Common.CommonFuncs import CommonFuncs
 from CoursesClient.CoursesClient import CoursesClient
 
 
@@ -16,7 +16,7 @@ class CoursesDownloaderBase:
 			self.selected_links[0].download()
 		elif total_len > 1:
 			for idx, link in enumerate(self.selected_links, 1):
-				clear()
+				CommonFuncs.clear()
 				print(f"Downloading {idx} / {total_len}")
 				link.download(ambiguous=True)
 

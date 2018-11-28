@@ -10,6 +10,8 @@ class CommonVars:
 
 	sesskey = None
 
+	should_use_link_name_instead_of_name_from_url = False
+
 	known_file_types = {
 		'application/pdf': '.pdf',
 		'application/msword': '.doc',

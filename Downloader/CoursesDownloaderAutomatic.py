@@ -1,4 +1,4 @@
-from Common import CommonFuncs
+from Common.CommonFuncs import CommonFuncs
 from Common.CommonVars import CommonVars
 from Downloader.CoursesDownloaderBase import CoursesDownloaderBase
 

@@ -1,12 +1,12 @@
 from Common.CommonVars import CommonVars
 from AdvancedInput.PrivateFuncs import PrivateFuncs
 from Common.BackWasPressed import BackWasPressed
-from Common.CommonFuncs import clear, trim_inner_spaces, sorted_unique_list
+from Common.CommonFuncs import CommonFuncs
 
 
 def ask_input_for_item_from_list(items_list, item_word, action_word="view", with_clear=True, inside_call=False):
 	if with_clear:
-		clear()
+		CommonFuncs.clear()
 
 	if not inside_call:
 		for prev_item in CommonVars.chosen_items_till_now.values():
@@ -14,8 +14,9 @@ def ask_input_for_item_from_list(items_list, item_word, action_word="view", with
 
 	print(f"Select the {item_word} you want to {action_word}:")
 
+	width = len(str(len(items_list) + 1))
 	for i, item in enumerate(items_list, 1):
-		print(f"[{i}] {item}")
+		print(f"[{i:{width}}] {item}")
 
 	selected_item = None
 
@@ -32,7 +33,7 @@ def ask_input_for_item_from_list(items_list, item_word, action_word="view", with
 		item_idx = int(chosen_item) - 1
 
 		if 0 <= item_idx < len(items_list):
-			confirm_message = f"You chose: {trim_inner_spaces(items_list[item_idx])} right? [Y/N] "
+			confirm_message = f"You chose: {CommonFuncs.trim_inner_spaces(items_list[item_idx])} right? [Y/N] "
 
 			def on_yes_action():
 				nonlocal selected_item
@@ -46,7 +47,7 @@ def ask_input_for_item_from_list(items_list, item_word, action_word="view", with
 			print(f"The {item_word} you chose is out of bounds! Try again.")
 
 	if not inside_call:
-		CommonVars.chosen_items_till_now[item_word] = f"You chose {trim_inner_spaces(selected_item)}"
+		CommonVars.chosen_items_till_now[item_word] = f"You chose {CommonFuncs.trim_inner_spaces(selected_item)}"
 
 	return selected_item
 
@@ -57,15 +58,16 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 	build_ranges_str = private_funcs.build_ranges_str
 	del private_funcs
 
-	clear()
+	CommonFuncs.clear()
 
 	for prev_item in CommonVars.chosen_items_till_now.values():
 		print(prev_item)
 
 	print(f"Select the {items_word} you want to {action_word}: (range:x-y or set:x,y,z)")
 
+	width = len(str(len(items_list) + 1))
 	for i, item in enumerate(items_list, 1):
-		print(f"[{i}] {item}")
+		print(f"[{i:{width}}] {item}")
 
 	selected_items = []
 
@@ -82,18 +84,18 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 			continue
 
 		result.extend(selected_items)
-		result = sorted_unique_list(result)
+		result = CommonFuncs.sorted_unique_list(result)
 
 		if result:
-			fit_result = sorted_unique_list(list(filter(lambda x: x <= len(items_list), result)))
+			fit_result = CommonFuncs.sorted_unique_list(list(filter(lambda x: x <= len(items_list), result)))
 
-			valid = sorted_unique_list(fit_result)
+			valid = CommonFuncs.sorted_unique_list(fit_result)
 			valid_str = build_ranges_str(valid)
 
 			set_result = set(result)
 			set_fit_result = set(fit_result)
 			if set_result != set_fit_result:
-				invalid = sorted_unique_list(list(set_result - set_fit_result))
+				invalid = CommonFuncs.sorted_unique_list(list(set_result - set_fit_result))
 				invalid_str = build_ranges_str(invalid)
 
 				if valid_str:
@@ -133,7 +135,7 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 
 				ask_yes_no_question("Is that your choice? [Y/N] ", on_yes_action, on_no_action)
 
-	selected_items = sorted_unique_list(selected_items)
+	selected_items = CommonFuncs.sorted_unique_list(selected_items)
 
 	CommonVars.chosen_items_till_now[items_word] = f"You chose {build_ranges_str(selected_items)}"
 

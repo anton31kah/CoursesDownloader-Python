@@ -6,7 +6,7 @@ import lxml.html
 from urllib3.exceptions import MaxRetryError
 
 from AdvancedInput.MenuChooseItem import ask_yes_no_question
-from Common.CommonFuncs import clear
+from Common.CommonFuncs import CommonFuncs
 
 
 class CoursesClient:
@@ -31,7 +31,7 @@ class CoursesClient:
 				if not should_retry:
 					quit()
 				else:
-					clear()
+					CommonFuncs.clear()
 					continue
 
 			break

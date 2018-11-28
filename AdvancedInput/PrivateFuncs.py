@@ -2,14 +2,14 @@ import re
 
 import more_itertools as mit
 
-from Common.CommonFuncs import sorted_unique_list, remove_inner_spaces, are_ascending
+from Common.CommonFuncs import CommonFuncs
 
 
 class PrivateFuncs:
 	@staticmethod
 	def validate_input(input_str):
 		valid_regex = r"^\d+((,\d+)*|(\-\d+)*)+(\d+)?$"
-		input_str = remove_inner_spaces(input_str)
+		input_str = CommonFuncs.remove_inner_spaces(input_str)
 		if re.match(valid_regex, input_str):
 			expanded = []
 			sequences = input_str.split(',')
@@ -20,14 +20,14 @@ class PrivateFuncs:
 					if len(limits) == 2:
 						lower_limit, upper_limit = limits
 					else:
-						limits = sorted_unique_list(limits)
+						limits = CommonFuncs.sorted_unique_list(limits)
 						lower_limit, upper_limit = limits[0], limits[-1]
-					if not are_ascending(limits):
+					if not CommonFuncs.are_ascending(limits):
 						return None
 					expanded.extend(range(lower_limit, upper_limit + 1))
 				else:
 					expanded.append(int(sequence))
-			return sorted_unique_list(list(filter(lambda x: x > 0, sorted_unique_list(expanded))))
+			return CommonFuncs.sorted_unique_list(list(filter(lambda x: x > 0, CommonFuncs.sorted_unique_list(expanded))))
 		else:
 			return None
 
