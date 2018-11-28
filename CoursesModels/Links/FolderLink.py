@@ -18,5 +18,10 @@ class FolderLink(DownloadableLink):
 		}
 		folder_to_download = CoursesClient.session.post(self.folder_download_link, data=download_folder_data)
 
+		if not filename:
+			filename = self._get_filename_from_headers(folder_to_download)
+
 		with open(filename, 'wb') as f:
 			f.write(folder_to_download.content)
+
+		return filename

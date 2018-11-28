@@ -38,10 +38,27 @@ class CoursesDownloaderManual(CoursesDownloaderBase):
 		self.selected_links.extend(result)
 		return self.selected_links
 
+	@staticmethod
+	def __ask_for_naming_method():
+		choices_possible = [
+			"Use the file name from the url (default behavior when downloading from browser)",
+			"Use the file name that appears on courses (Recommended)"
+		]
+		result = ask_input_for_item_from_list(choices_possible, "choice", "choose")
+		if isinstance(result, BackWasPressed):
+			return result
+		elif result == choices_possible[0]:
+			CommonVars.using_name_from_courses_instead_of_name_from_url = False
+		elif result == choices_possible[1]:
+			CommonVars.using_name_from_courses_instead_of_name_from_url = True
+
+		return result
+
 	def __count_specific_runner(self, count_specific_ask_method):
 		self.__ask_for_course()
 		self.__ask_for_section()
 		count_specific_ask_method()
+		self.__ask_for_naming_method()
 		self._download_selected_links()
 
 	def __count_specific_runner_with_back(self, count_specific_ask_method):
@@ -49,6 +66,7 @@ class CoursesDownloaderManual(CoursesDownloaderBase):
 			self.__ask_for_course,
 			self.__ask_for_section,
 			count_specific_ask_method,
+			self.__ask_for_naming_method,
 			self._download_selected_links
 		]
 

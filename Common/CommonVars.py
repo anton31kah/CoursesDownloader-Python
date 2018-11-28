@@ -10,7 +10,7 @@ class CommonVars:
 
 	sesskey = None
 
-	should_use_link_name_instead_of_name_from_url = False
+	using_name_from_courses_instead_of_name_from_url = True
 
 	known_file_types = {
 		'application/pdf': '.pdf',

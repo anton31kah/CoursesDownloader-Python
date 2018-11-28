@@ -2,7 +2,6 @@ import os
 import re
 import sys
 from os.path import basename
-from urllib.request import urlopen
 
 import numpy as np
 
@@ -58,5 +57,4 @@ class CommonFuncs:
 
 	@staticmethod
 	def extract_filename_from_url(url):
-		res = urlopen(url)
-		return basename(res.url)
+		return basename(url)
