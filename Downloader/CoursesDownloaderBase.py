@@ -15,10 +15,14 @@ class CoursesDownloaderBase:
 		if total_len == 1:
 			self.selected_links[0].download()
 		elif total_len > 1:
+			downloaded_names = []
+
 			for idx, link in enumerate(self.selected_links, 1):
 				CommonFuncs.clear()
-				print(f"Downloading {idx} / {total_len}")
+				print(f"Downloading {link.name} {idx} / {total_len}")
+				downloaded_names.append(link.name)
 				link.download(ambiguous=True)
 
 			print(f"Downloaded {total_len} successfully")
-
+			for i, downloaded_name in enumerate(downloaded_names, 1):
+				print(f"{i} {downloaded_name}")

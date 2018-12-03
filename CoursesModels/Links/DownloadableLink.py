@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from clint.textui import progress
+
 from Common.CommonFuncs import CommonFuncs
 from Common.CommonVars import CommonVars
 from CoursesModels.Links.FileTypeKnownNotKnownHelpers.FileTypeKnown import FileTypeKnown
@@ -34,3 +36,14 @@ class DownloadableLink(ABC, Link):
 	@abstractmethod
 	def _get_and_save_file(self, filename):
 		pass
+
+	@staticmethod
+	def _download_with_progress(filename, thing_to_download):
+		with open(filename, 'wb') as f:
+			total_length = int(thing_to_download.headers.get('content-length'))
+
+			expected_size = (total_length / 1024) + 1
+			for chunk in progress.bar(thing_to_download.iter_content(chunk_size=1024), expected_size=expected_size):
+				if chunk:
+					f.write(chunk)
+					f.flush()

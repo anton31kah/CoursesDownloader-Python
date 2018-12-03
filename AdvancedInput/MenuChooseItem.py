@@ -14,7 +14,7 @@ def ask_input_for_item_from_list(items_list, item_word, action_word="view", with
 
 	print(f"Select the {item_word} you want to {action_word}:")
 
-	width = len(str(len(items_list) + 1))
+	width = len(str(len(items_list)))
 	for i, item in enumerate(items_list, 1):
 		print(f"[{i:{width}}] {item}")
 
@@ -65,7 +65,7 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 
 	print(f"Select the {items_word} you want to {action_word}: (range:x-y or set:x,y,z)")
 
-	width = len(str(len(items_list) + 1))
+	width = len(str(len(items_list)))
 	for i, item in enumerate(items_list, 1):
 		print(f"[{i:{width}}] {item}")
 

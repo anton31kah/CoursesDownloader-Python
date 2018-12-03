@@ -16,12 +16,11 @@ class FolderLink(DownloadableLink):
 			'id': folder_to_download_id,
 			'sesskey': folder_to_download_sesskey
 		}
-		folder_to_download = CoursesClient.session.post(self.folder_download_link, data=download_folder_data)
+		folder_to_download = CoursesClient.session.post(self.folder_download_link, data=download_folder_data, stream=True)
 
 		if not filename:
 			filename = self._get_filename_from_headers(folder_to_download)
 
-		with open(filename, 'wb') as f:
-			f.write(folder_to_download.content)
+		super()._download_with_progress(filename, folder_to_download)
 
 		return filename
