@@ -7,7 +7,7 @@ from SpecialActions.ActionState import ActionState
 class BaseAction:
 	type = "Base"
 	state = None
-	children = ("Back", "Open", "Exit", "Quit")
+	children = ("Back", "Open", "Copy", "Exit", "Quit")
 
 	@classmethod
 	def handle(cls, input_string):

@@ -1,11 +1,11 @@
-import webbrowser
+import pyperclip
 
 from SpecialActions.OpenCopyBaseAction import OpenCopyBaseAction
 
 
-class OpenAction(OpenCopyBaseAction):
-	type = "Open"
-	method_to_use = webbrowser.open_new_tab
+class CopyAction(OpenCopyBaseAction):
+	type = "Copy"
+	method_to_use = pyperclip.copy
 
 	@classmethod
 	def handle(cls, input_string):
@@ -17,5 +17,5 @@ class OpenAction(OpenCopyBaseAction):
 
 	@classmethod
 	def handle_multiple_links(cls, selected_links):
-		for link in selected_links:
-			cls.method_to_use(link.url)
+		# noinspection PyCallByClass
+		cls.method_to_use("\n".join(map(lambda link: link.url, selected_links)))
