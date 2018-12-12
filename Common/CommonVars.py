@@ -8,6 +8,10 @@ class CommonVars:
 
 	chosen_items_till_now = {}
 
+	course_link = None
+	selected_section = None
+	selected_links = []
+
 	sesskey = None
 
 	using_name_from_courses_instead_of_name_from_url = True

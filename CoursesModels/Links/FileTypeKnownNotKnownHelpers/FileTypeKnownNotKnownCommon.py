@@ -9,10 +9,10 @@ class FileTypeKnownNotKnownCommon:
 
 	default_location = f"{Path.home()}\\Downloads\\"
 
-	@staticmethod
-	def prepare_valid_file_path(filename):
-		filename = re.sub(FileTypeKnownNotKnownCommon.illegal_chars_regex, "_", filename)
-		filename = FileTypeKnownNotKnownCommon.default_location + filename
+	@classmethod
+	def prepare_valid_file_path(cls, filename):
+		filename = re.sub(cls.illegal_chars_regex, "_", filename)
+		filename = cls.default_location + filename
 		return filename
 
 	@staticmethod

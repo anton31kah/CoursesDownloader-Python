@@ -9,6 +9,15 @@ from CoursesModels.Section import Section
 from Common.CommonVars import CommonVars
 
 
+def find_id_from_ancestors(html_element):
+	anchor_id = html_element.attrib.get('id')
+	while not anchor_id:
+		html_element = html_element.getparent()
+		anchor_id = html_element.attrib.get('id')
+
+	return anchor_id
+
+
 def extract_sections_for_course(course_link):
 	CoursesClient()
 	course_page = CoursesClient.session.get(course_link, allow_redirects=True)
@@ -22,7 +31,10 @@ def extract_sections_for_course(course_link):
 
 	for header_link in headers_links:
 		if header_link.tag.startswith("h"):
-			current_section = Section(Header(next(header_link.itertext()), header_link.tag))
+			header_name = next(header_link.itertext())
+			header_tag = header_link.tag
+			header_id = find_id_from_ancestors(header_link)
+			current_section = Section(Header(header_name, header_tag, header_id))
 			CommonVars.sections.append(current_section)
 		elif 'resource' in header_link.attrib['href']:  # header_link.tag.startswith("a")
 			current_section.links.append(FileLink(next(header_link.itertext()), header_link.attrib['href']))

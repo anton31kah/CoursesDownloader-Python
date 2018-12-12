@@ -1,7 +1,8 @@
-from Common.CommonVars import CommonVars
 from AdvancedInput.PrivateFuncs import PrivateFuncs
-from Common.BackWasPressed import BackWasPressed
 from Common.CommonFuncs import CommonFuncs
+from Common.CommonVars import CommonVars
+from SpecialActions.ActionState import ActionState
+from SpecialActions.BaseAction import BaseAction
 
 
 def ask_input_for_item_from_list(items_list, item_word, action_word="view", with_clear=True, inside_call=False):
@@ -24,8 +25,9 @@ def ask_input_for_item_from_list(items_list, item_word, action_word="view", with
 	while not selected_item_isvalid:
 		chosen_item = input(f"And the {item_word} that you selected is >>> ")
 
-		if handle_if_back(chosen_item):
-			return BackWasPressed()
+		action = handle_action(chosen_item)
+		if action.state == ActionState.found_and_handled:
+			return action
 
 		if not chosen_item.isdigit():
 			continue
@@ -75,8 +77,9 @@ def ask_input_for_items_from_list(items_list, items_word, action_word="download"
 	while not selected_item_isvalid:
 		items_idx = input(f"And the {items_word} that you selected are >>> ")
 
-		if handle_if_back(items_idx):
-			return BackWasPressed()
+		action = handle_action(items_idx)
+		if action.state == ActionState.found_and_handled:
+			return action
 
 		result = validate_input(items_idx)
 
@@ -167,19 +170,5 @@ def ask_yes_no_question(confirm_message, on_yes, on_no=None, on_other=None):
 	return final_answer
 
 
-def handle_if_back(input_string):
-	if 'back' in input_string.lower():
-		confirm_message = (
-			"I noticed that you entered back, which will return you one step back\n"
-			"Is that the action you wanted to perform (answer no if it was entered by mistake)? [Y/N] "
-		)
-		is_yes = ask_yes_no_question(confirm_message, None)
-		if is_yes:
-			past_states = list(CommonVars.chosen_items_till_now.keys())
-			if past_states:
-				CommonVars.chosen_items_till_now.pop(past_states[-1])
-			return True
-		else:
-			return False
-	else:
-		return False
+def handle_action(input_string):
+	return BaseAction().handle(input_string)

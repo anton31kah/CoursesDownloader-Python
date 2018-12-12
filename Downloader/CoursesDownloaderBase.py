@@ -1,23 +1,22 @@
 from Common.CommonFuncs import CommonFuncs
+from Common.CommonVars import CommonVars
 from CoursesClient.CoursesClient import CoursesClient
 
 
 class CoursesDownloaderBase:
 	def __init__(self):
-		self.course_link = None
-		self.selected_section = None
-		self.selected_links = []
 		CoursesClient()
 
-	def _download_selected_links(self):
-		total_len = len(self.selected_links)
+	@classmethod
+	def _download_selected_links(cls):
+		total_len = len(CommonVars.selected_links)
 
 		if total_len == 1:
-			self.selected_links[0].download()
+			CommonVars.selected_links[0].download()
 		elif total_len > 1:
 			downloaded_names = []
 
-			for idx, link in enumerate(self.selected_links, 1):
+			for idx, link in enumerate(CommonVars.selected_links, 1):
 				CommonFuncs.clear()
 				print(f"Downloading {link.name} {idx} / {total_len}")
 				downloaded_names.append(link.name)

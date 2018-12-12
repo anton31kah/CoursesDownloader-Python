@@ -1,42 +1,46 @@
 from AdvancedInput.MenuChooseItem import ask_input_for_item_from_list, ask_input_for_items_from_list
 from AdvancedInput.MenuChooseItem import ask_yes_no_question
-from Common.BackWasPressed import BackWasPressed
 from Common.CommonVars import CommonVars
 from CoursesClient.SectionExtractor import extract_sections_for_course
 from Downloader.CoursesDownloaderBase import CoursesDownloaderBase
+from SpecialActions.BaseAction import BaseAction
 
 
 class CoursesDownloaderManual(CoursesDownloaderBase):
-	def __ask_for_course(self):
+	@classmethod
+	def __ask_for_course(cls):
 		result = ask_input_for_item_from_list(CommonVars.courses, "course")
-		if isinstance(result, BackWasPressed):
+		if isinstance(result, BaseAction):
 			return result
-		self.course_link = result.url
-		return self.course_link
+		CommonVars.course_link = result.url
+		return CommonVars.course_link
 
-	def __ask_for_section(self):
-		extract_sections_for_course(self.course_link)
+	@classmethod
+	def __ask_for_section(cls):
+		extract_sections_for_course(CommonVars.course_link)
 		result = ask_input_for_item_from_list(CommonVars.sections, "section")
-		if isinstance(result, BackWasPressed):
+		if isinstance(result, BaseAction):
 			return result
-		self.selected_section = result
-		return self.selected_section
+		CommonVars.selected_section = result
+		return CommonVars.selected_section
 
-	def __ask_for_one_link(self):
-		self.selected_links.clear()
-		result = ask_input_for_item_from_list(self.selected_section, "file", "download")
-		if isinstance(result, BackWasPressed):
+	@classmethod
+	def __ask_for_one_link(cls):
+		CommonVars.selected_links.clear()
+		result = ask_input_for_item_from_list(CommonVars.selected_section, "file", "download")
+		if isinstance(result, BaseAction):
 			return result
-		self.selected_links.append(result)
-		return self.selected_links[0]
+		CommonVars.selected_links.append(result)
+		return CommonVars.selected_links[0]
 
-	def __ask_for_multiple_links(self):
-		self.selected_links.clear()
-		result = ask_input_for_items_from_list(self.selected_section, "files", "download")
-		if isinstance(result, BackWasPressed):
+	@classmethod
+	def __ask_for_multiple_links(cls):
+		CommonVars.selected_links.clear()
+		result = ask_input_for_items_from_list(CommonVars.selected_section, "files", "download")
+		if isinstance(result, BaseAction):
 			return result
-		self.selected_links.extend(result)
-		return self.selected_links
+		CommonVars.selected_links.extend(result)
+		return CommonVars.selected_links
 
 	@staticmethod
 	def __ask_for_naming_method():
@@ -45,7 +49,7 @@ class CoursesDownloaderManual(CoursesDownloaderBase):
 			"Use the file name that appears on courses (Recommended)"
 		]
 		result = ask_input_for_item_from_list(choices_possible, "choice", "choose")
-		if isinstance(result, BackWasPressed):
+		if isinstance(result, BaseAction):
 			return result
 		elif result == choices_possible[0]:
 			CommonVars.using_name_from_courses_instead_of_name_from_url = False
@@ -75,9 +79,8 @@ class CoursesDownloaderManual(CoursesDownloaderBase):
 		while True:
 			current_action = actions_to_perform[current_action_idx]
 			result = current_action()
-			if isinstance(result, BackWasPressed):
-				current_action_idx -= 1
-				current_action_idx = max(0, current_action_idx)
+			if isinstance(result, BaseAction):
+				current_action_idx = result.set_action_idx_pointer(current_action_idx)
 			else:
 				current_action_idx += 1
 				if current_action_idx >= len(actions_to_perform):
