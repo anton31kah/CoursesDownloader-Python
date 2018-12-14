@@ -11,16 +11,17 @@ class BaseAction:
 
 	@classmethod
 	def handle(cls, input_string):
+		BaseAction.state = ActionState.not_found
 		words = "|".join(cls.children)
 		actions_found = re.findall(rf"\b(?:{words})\b", input_string, re.IGNORECASE)
 		if actions_found:
 			action_class_name = actions_found[0].title() + "Action"
 
 			action_class = CommonFuncs.class_for_name(f"SpecialActions.{action_class_name}", action_class_name)
-			action_class.handle(input_string)
-			return cls
+			action_object = action_class()
+			action_object.handle(input_string)
+			return action_object
 
-		cls.state = ActionState.not_found
 		return cls
 
 	@classmethod

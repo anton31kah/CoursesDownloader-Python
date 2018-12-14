@@ -150,7 +150,8 @@ def ask_yes_no_question(confirm_message, on_yes, on_no=None, on_other=None):
 
 	confirmation_isvalid = False
 	while not confirmation_isvalid:
-		confirmation = input(confirm_message)[0].lower()
+		confirmation = input(confirm_message)
+		confirmation = confirmation[0].lower() if confirmation else ''
 		if confirmation == 'y':
 			final_answer = True
 			if on_yes:
@@ -171,4 +172,6 @@ def ask_yes_no_question(confirm_message, on_yes, on_no=None, on_other=None):
 
 
 def handle_action(input_string):
-	return BaseAction().handle(input_string)
+	action = BaseAction()
+	action = action.handle(input_string)
+	return action

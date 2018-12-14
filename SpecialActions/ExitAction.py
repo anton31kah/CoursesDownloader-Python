@@ -7,8 +7,8 @@ class ExitAction(BaseAction):
 
 	@classmethod
 	def handle(cls, input_string):
-		return QuitAction.handle(input_string)
+		QuitAction.handle(input_string)
 
 	@classmethod
 	def set_action_idx_pointer(cls, level):
-		return QuitAction.set_action_idx_pointer(level)
+		QuitAction.set_action_idx_pointer(level)
