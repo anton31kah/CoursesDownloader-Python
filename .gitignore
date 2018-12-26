@@ -159,4 +159,4 @@ fabric.properties
 .idea/httpRequests
 
 # Selenium driver
-phantomjs-2.1.1-windows/
+SeleniumFirefoxDriver/
