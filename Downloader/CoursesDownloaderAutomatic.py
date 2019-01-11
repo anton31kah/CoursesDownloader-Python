@@ -48,5 +48,5 @@ class CoursesDownloaderAutomatic(CoursesDownloaderBase):
 		# so I conclude that this process is automated enough the way it is
 		# find the course then the section and entering a range of 1-7 and downloading all these files
 		# seems pretty automated to me, you have control over everything and at the same time you don't
-		# have to worry about to many details
+		# have to worry about too many details
 		# "it simply works" is what I wanted to achieve creating this project
